@@ -1,7 +1,11 @@
 <template>
 <div id="app">
+  <h2 style="float: right;"><a href="https://github.com/niksmr/vue-masked-input">GitHub</a></h2>
   <h1>Vue Masked Input</h1>
+
+
   <h3>Dead simple masked input component for Vue.js 2.X</h3>
+
   <hr />
   <h4>Date: </h4>
   <masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date" /><span v-if="">{{ date }}</span>
@@ -17,7 +21,18 @@
   <input v-model="userMask" placeholder="Mask" />
   <masked-input v-model="userField" :mask="userMask" placeholder="Text" /><span>{{ userField }}</span>
   <br />
-  <h4>Check <a href="#">GitHub</a> for more</h4>
+  <br />
+  <h4>Install </h4>
+  <p class="code">
+    npm install vue-masked-input --save
+  </p>
+  <h4>Use</h4>
+  <p class="code">
+    import MaskedInput from 'vue-masked-input'
+    <br /> ... <br />components: { <br />&nbsp;&nbsp;MaskedInput <br />}
+  </p>
+  <br />
+  <h4>Check <a href="https://github.com/niksmr/vue-masked-input">GitHub</a> for more</h4>
 </div>
 </template>
 
