@@ -1,6 +1,13 @@
 # Vue Masked Input
 Dead simple masked input component for Vue.js 2.X. Based on [inputmask-core](https://github.com/insin/inputmask-core).
 
+### [Live Demo](https://niksmr.github.io/vue-masked-input/)
+
+## Install
+### npm
+```
+npm install vue-masked-input --save
+```
 
 ## Usage
 Use it with `v-model` just like a native html input with the `mask` attribute:
