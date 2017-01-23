@@ -7,6 +7,13 @@
   <h3>Dead simple masked input component for Vue.js 2.X</h3>
 
   <hr />
+  <ul>
+    <li>1 – number</li>
+    <li>a – letter</li>
+    <li>A – letter, forced to upper case when entered</li>
+    <li>* – alphanumeric</li>
+    <li># – alphanumeric, forced to upper case when entered</li>
+  </ul>
   <h4>Date: </h4>
   <masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date" /><span v-if="">{{ date }}</span>
   <p class="code">
