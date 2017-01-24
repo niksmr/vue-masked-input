@@ -24,5 +24,5 @@ The following format characters define editable parts of the mask (see [inputmas
 
 If you need to include one of these characters as a static part of the mask, you can escape them with a preceding backslash:
 ```vue
-<masked-input v-model="date" mask="+\\1 (111) 111-1111" placeholder="Phone number" type="tel" />
+<masked-input v-model="phone" mask="+\\1 (111) 111-1111" placeholder="Phone number" type="tel" />
 ```
