@@ -40,6 +40,7 @@
   </p>
   <br />
   <h4>Check <a href="https://github.com/niksmr/vue-masked-input">GitHub</a> for more</h4>
+  <br />
 </div>
 </template>
 
@@ -76,6 +77,7 @@ body {
 }
 
 input {
+  margin: 12px 0;
   font-family: inherit;
   font-size: inherit;
   padding: 8px 16px;
@@ -107,7 +109,8 @@ h4 {
 
 span {
   opacity: 0.5;
-  margin-left: 32px;
+  margin-left: 16px;
+  white-space: nowrap;
 }
 
 .code {

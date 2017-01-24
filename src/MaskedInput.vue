@@ -1,21 +1,33 @@
 <template>
-<input ref="input" :value="value" @keypress.prevent="keyPress(arguments[0])" @keydown="keyDown(arguments[0])" @mouseup="mouseUp(arguments[0])" @focus.prevent="focusin(arguments[0])" @focusout="focusout(arguments[0])" @cut="cut(arguments[0])" @copy="copy(arguments[0])"
-    @paste="paste(arguments[0])" />
+  <input ref="input"
+    :value="value"
+    @keydown="keyDown(arguments[0])"
+    @keypress="keyPress(arguments[0])"
+    @keyup="keyUp(arguments[0])"
+    @textInput="textInput(arguments[0])"
+    @mouseup="mouseUp(arguments[0])"
+    @focus.prevent="focusin(arguments[0])"
+    @focusout="focusout(arguments[0])"
+    @cut="cut(arguments[0])"
+    @copy="copy(arguments[0])"
+    @paste="paste(arguments[0])"
+    :disabled="mask_core===null"
+  />
 </template>
 
 <script>
-import InputMask from 'inputmask-core';
-import ffpoly from './ff-polyfill.js'; //Firefox Polyfill for focus events
-ffpoly();
+import InputMask from 'inputmask-core'
+import ffpoly from './ff-polyfill.js' //Firefox Polyfill for focus events
+ffpoly()
 
 export default {
 
   name: 'MaskedInput',
 
   data: () => ({
-    firstFocus: true,
     marginLeft: 0,
-    mask_core: null
+    mask_core: null,
+    updateAfterAll: false
   }),
 
   props: {
@@ -33,44 +45,48 @@ export default {
   },
 
   watch: {
-    // whenever question changes, this function will run
     mask: function(newMask) {
-      try {
-        this.mask_core = new InputMask({
-          pattern: newMask,
-          value: this.default
-        })
-      } catch (e) {
-        this.mask_core = new InputMask({
-          pattern: 'B\\ad1M\\ask',
-          value: this.default
-        })
-      }
-      this.update();
+      this.initMask()
     }
   },
 
   mounted() {
-    this.mask_core = new InputMask({
-      pattern: this.mask,
-      value: this.default
-    })
-    this.$refs.input.value = this.default
+    this.initMask()
   },
 
   methods: {
 
+    initMask() {
+      try {
+        this.mask_core = new InputMask({
+          pattern: this.mask,
+          value: this.default
+        })
+        this.$refs.input.value = this.mask_core.setValue = this.default
+        this.mask_core.setSelection({
+          start: 0,
+          end: 0
+        })
+        this.$emit('input', this.default)
+      }
+      catch (e) {
+        this.mask_core = null
+        this.$refs.input.value = '0 editable chars in mask'
+        this.$emit('input', this.$refs.input.value)
+      }
+    },
+
     getValue() {
-      return this.$refs.input.value
+      if (this.mask_core === null) return '';
+      return this.mask_core.getValue()
     },
 
-    keyPress(e) {
-      this.mask_core.input(e.key)
-      this.update()
-    },
+    keyDown(e) { //Always
+      if (this.mask_core === null) {
+        e.preventDefault()
+        return;
+      }
 
-    keyDown(e) {
-      this.setNativeSelection()
       switch (e.keyCode) {
 
         //backspace
@@ -80,24 +96,26 @@ export default {
             this.mask_core.selection.start > this.marginLeft ||
             this.mask_core.selection.start != this.mask_core.selection.end
           ) {
-            this.mask_core.backspace();
+            this.mask_core.backspace()
+            this.updateToCoreState()
           }
           break;
 
-          //left arrow
+        //left arrow
         case 37:
           e.preventDefault()
 
           if (this.$refs.input.selectionStart === this.$refs.input.selectionEnd)
-            this.$refs.input.selectionStart--
+            this.$refs.input.selectionEnd = this.$refs.input.selectionStart--
 
             this.mask_core.selection = {
               start: this.$refs.input.selectionStart,
               end: this.$refs.input.selectionStart
             }
+            this.updateToCoreState()
           break;
 
-          //right arrow
+        //right arrow
         case 39:
           e.preventDefault()
 
@@ -108,9 +126,10 @@ export default {
             start: this.$refs.input.selectionEnd,
             end: this.$refs.input.selectionEnd
           }
+          this.updateToCoreState()
           break;
 
-          //end
+        //end
         case 35:
           e.preventDefault()
           this.$refs.input.selectionStart = this.$refs.input.selectionEnd = this.$refs.input.value.length
@@ -119,9 +138,10 @@ export default {
             start: this.$refs.input.selectionEnd,
             end: this.$refs.input.selectionEnd
           }
+          this.updateToCoreState()
           break;
 
-          //home
+        //home
         case 36:
           e.preventDefault()
           this.$refs.input.selectionStart = this.$refs.input.selectionEnd = 0
@@ -129,41 +149,50 @@ export default {
             start: this.$refs.input.selectionStart,
             end: this.$refs.input.selectionStart
           }
+          this.updateToCoreState()
           break;
 
-          //delete
+        //delete
         case 46:
           e.preventDefault()
 
           if (this.$refs.input.selectionStart === this.$refs.input.selectionEnd) {
-            if (this.$refs.input.selectionEnd !== this.mask_core.length) {
-              this.mask_core.setSelection({
-                start: 0,
-                end: this.mask_core.getValue().length
-              })
-              this.mask_core.backspace()
-              this.mask_core.setSelection({
-                start: 0,
-                end: 0
-              })
-              this.$refs.input.selectionStart = this.mask_core.selection.start;
-              this.$refs.input.selectionEnd = this.mask_core.selection.start;
-            }
+            this.mask_core.setValue('');
+            this.mask_core.setSelection({
+              start: 0,
+              end: 0
+            })
+            this.$refs.input.selectionStart = this.mask_core.selection.start;
+            this.$refs.input.selectionEnd = this.mask_core.selection.start;
+
           } else {
             this.mask_core.backspace()
           }
+          this.updateToCoreState()
           break;
-
       }
-
-      this.update()
-
     },
+
+    keyPress(e) { //works only on Desktop
+    },
+
+    textInput(e) {
+      e.preventDefault()
+      if (this.mask_core.input(e.data)) {
+        this.updateToCoreState()
+        this.updateAfterAll = true
+      }
+    },
+
+    keyUp(e) {
+      if (this.updateAfterAll) this.updateToCoreState()
+      this.updateAfterAll = false
+    },
+
 
     cut(e) {
       e.preventDefault();
       if (this.$refs.input.selectionStart !== this.$refs.input.selectionEnd) {
-
         let text = this.$refs.input.value.slice(
           this.$refs.input.selectionStart,
           this.$refs.input.selectionEnd
@@ -172,20 +201,22 @@ export default {
           document.execCommand('copy')
         } catch (err) {}
         this.mask_core.backspace()
-        this.update()
+        this.updateToCoreState()
       }
-
     },
 
     copy(e) {},
 
     paste(e) {
-      e.preventDefault();
+      e.preventDefault()
       this.mask_core.paste(e.clipboardData.getData('text'))
-      this.update()
+      this.updateToCoreState()
     },
 
-    update() {
+    updateToCoreState() {
+      if (this.mask_core === null) {
+        return;
+      }
       this.$refs.input.value = this.mask_core.getValue()
       this.$refs.input.selectionStart = this.mask_core.selection.start;
       this.$refs.input.selectionEnd = this.mask_core.selection.end;
@@ -193,12 +224,11 @@ export default {
     },
 
     focusin(e) {
-      this.mask_core.setValue(this.value)
-      this.update()
     },
 
     isEmpty() {
-      return this.mask_core.emptyValue === this.$refs.input.value
+      if (this.mask_core === null) return true;
+      return this.mask_core.getValue() === this.mask_core.emptyValue
     },
 
     focusout(e) {
@@ -208,7 +238,7 @@ export default {
           start: 0,
           end: 0
         })
-        this.$emit('input', '')
+        this.$emit('input', this.default)
       }
     },
 
@@ -220,7 +250,7 @@ export default {
     },
 
     mouseUp(e) {
-      if (this.$refs.input.value === this.mask_core.emptyValue &&
+      if (this.isEmpty() &&
         this.$refs.input.selectionStart === this.$refs.input.selectionEnd) {
         this.mask_core.setSelection({
           start: 0,
@@ -229,8 +259,9 @@ export default {
         this.$refs.input.selectionStart = this.mask_core.selection.start;
         this.$refs.input.selectionEnd = this.mask_core.selection.start;
         this.marginLeft = this.mask_core.selection.start;
-
-      } else {
+        this.updateToCoreState();
+      }
+      else {
         this.setNativeSelection();
       }
     }
