@@ -62,7 +62,8 @@ export default {
           pattern: this.mask,
           value: this.default
         })
-        this.$refs.input.value = this.mask_core.setValue = this.default
+        this.$refs.input.value = this.default
+        this.mask_core.setValue(this.default)
         this.mask_core.setSelection({
           start: 0,
           end: 0
@@ -173,19 +174,28 @@ export default {
       }
     },
 
-    keyPress(e) { //works only on Desktop
+    input(e) {
     },
 
-    textInput(e) {
-      e.preventDefault()
-      if (this.mask_core.input(e.data)) {
-        this.updateToCoreState()
-        this.updateAfterAll = true
+    keyPress(e) { //works only on Desktop  //Dirty FF hack
+      if (navigator.userAgent.indexOf('Firefox') != -1 &&
+      parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf('Firefox') + 8)) >= 3.6) {
+        e.preventDefault()
+        e.data = e.key
+        this.textInput(e)
       }
     },
 
+    textInput(e) {
+      if (e.preventDefault) e.preventDefault()
+      if (this.mask_core.input(e.data)) {
+        this.updateAfterAll = true
+      }
+      this.updateToCoreState()
+    },
+
     keyUp(e) {
-      if (this.updateAfterAll) this.updateToCoreState()
+      this.updateToCoreState()
       this.updateAfterAll = false
     },
 

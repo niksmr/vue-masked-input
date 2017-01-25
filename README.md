@@ -26,3 +26,8 @@ If you need to include one of these characters as a static part of the mask, you
 ```vue
 <masked-input v-model="phone" mask="+\\1 (111) 111-1111" placeholder="Phone number" type="tel" />
 ```
+
+## Known issues/TODO
+* Copy/cut/paste in FF
+* Copy/cut/paste in mobile Chrome
+* Cyrillic chars are not supported in mobile Chrome
