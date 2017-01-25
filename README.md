@@ -30,4 +30,4 @@ If you need to include one of these characters as a static part of the mask, you
 ## Known issues/TODO
 * Copy/cut/paste in FF
 * Copy/cut/paste in mobile Chrome
-* Cyrillic chars are not supported in mobile Chrome
+* Cyrillic chars are not supported
