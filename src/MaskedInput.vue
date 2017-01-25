@@ -41,7 +41,11 @@ export default {
     mask: {
       type: String,
       required: true
-    }
+    },
+    placeholderChar: {
+      type: String,
+      default: '_'
+    },
   },
 
   watch: {
@@ -60,7 +64,24 @@ export default {
       try {
         this.mask_core = new InputMask({
           pattern: this.mask,
-          value: this.default
+          value: this.default,
+          placeholderChar: this.placeholderChar,
+          formatCharacters: {
+            'a': {
+              validate: char => /^[A-Za-zА-Яа-я]$/.test(char),
+            },
+            'A': {
+              validate: char => /^[A-Za-zА-Яа-я]$/.test(char) ,
+              transform: char => char.toUpperCase()
+            },
+            '*': {
+              validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
+            },
+            '#': {
+              validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
+              transform: char => char.toUpperCase()
+            },
+          }
         })
         this.$refs.input.value = this.default
         this.mask_core.setValue(this.default)
@@ -68,12 +89,12 @@ export default {
           start: 0,
           end: 0
         })
-        this.$emit('input', this.default)
+        this.$emit('input', this.default, this.default)
       }
       catch (e) {
         this.mask_core = null
         this.$refs.input.value = '0 editable chars in mask'
-        this.$emit('input', this.$refs.input.value)
+        this.$emit('input', this.$refs.input.value, '')
       }
     },
 
@@ -87,6 +108,8 @@ export default {
         e.preventDefault()
         return;
       }
+      this.setNativeSelection()
+
 
       switch (e.keyCode) {
 
@@ -178,6 +201,7 @@ export default {
     },
 
     keyPress(e) { //works only on Desktop  //Dirty FF hack
+      if (e.ctrlKey) return;
       if (navigator.userAgent.indexOf('Firefox') != -1 &&
       parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf('Firefox') + 8)) >= 3.6) {
         e.preventDefault()
@@ -203,10 +227,10 @@ export default {
     cut(e) {
       e.preventDefault();
       if (this.$refs.input.selectionStart !== this.$refs.input.selectionEnd) {
-        let text = this.$refs.input.value.slice(
+        /*let text = this.$refs.input.value.slice(
           this.$refs.input.selectionStart,
           this.$refs.input.selectionEnd
-        )
+        )*/
         try {
           document.execCommand('copy')
         } catch (err) {}
@@ -215,7 +239,8 @@ export default {
       }
     },
 
-    copy(e) {},
+    copy(e) {
+    },
 
     paste(e) {
       e.preventDefault()
@@ -227,10 +252,12 @@ export default {
       if (this.mask_core === null) {
         return;
       }
-      this.$refs.input.value = this.mask_core.getValue()
+      if (this.$refs.input.value !== this.mask_core.getValue()) {
+        this.$refs.input.value = this.mask_core.getValue()
+        this.$emit('input', this.$refs.input.value, this.mask_core.getRawValue())
+      }
       this.$refs.input.selectionStart = this.mask_core.selection.start;
       this.$refs.input.selectionEnd = this.mask_core.selection.end;
-      this.$emit('input', this.$refs.input.value)
     },
 
     focusin(e) {
@@ -248,7 +275,7 @@ export default {
           start: 0,
           end: 0
         })
-        this.$emit('input', this.default)
+        this.$emit('input', this.default, this.default)
       }
     },
 

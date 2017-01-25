@@ -24,6 +24,11 @@
   <p class="code">
     &lt;masked-input v-model="phone" mask="+\1 (111) 1111-11" placeholder="Phone" /&gt;
   </p>
+  <h4>Get a raw value: </h4>
+  <masked-input mask="+\1 (111) 1111-11" placeholder="Phone" @input="rawVal = arguments[1]" /><span>{{ rawVal }}</span>
+  <p class="code">
+    &lt;masked-input mask=&quot;+\1 (111) 1111-11&quot; placeholder=&quot;Phone&quot; <br />&nbsp;&nbsp;@input=&quot;rawVal = arguments[1]&quot; /&gt;
+  </p>
   <h4>Your own mask (hot re-mask available): </h4>
   <input v-model="userMask" placeholder="Mask" />
   <masked-input v-model="userField" :mask="userMask" placeholder="Text" /><span>{{ userField }}</span>
@@ -54,6 +59,7 @@ export default {
     phone: '',
     userMask: 'aa-aa-AAAA',
     userField: '',
+    rawVal: ''
   }),
   components: {
     MaskedInput
