@@ -35,3 +35,5 @@ You can also get a raw user input text if you want. Then, instead of using v-mod
 ## Known issues/TODO
 * Cut in mobile Chrome
 * Cyrillic chars are not supported in mobile Chrome
+
+Found more? Open for feedback and pull requests

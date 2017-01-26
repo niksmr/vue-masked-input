@@ -200,10 +200,16 @@ export default {
     input(e) {
     },
 
-    keyPress(e) { //works only on Desktop  //Dirty FF hack
-      if (e.ctrlKey) return;
-      if (navigator.userAgent.indexOf('Firefox') != -1 &&
-      parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf('Firefox') + 8)) >= 3.6) {
+    keyPress(e) { //works only on Desktop
+      if (e.ctrlKey) return; //Fix FF copy/paste issue
+      /*
+       IE & FF are not trigger textInput event, so we have to force it
+      */
+      let isIE = /*@cc_on!@*/false || !!document.documentMode; //by http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+      let isFirefox = typeof InstallTrigger !== 'undefined';
+
+
+      if (isIE || isFirefox) {
         e.preventDefault()
         e.data = e.key
         this.textInput(e)
