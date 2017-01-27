@@ -27,13 +27,13 @@ If you need to include one of these characters as a static part of the mask, you
 <masked-input v-model="phone" mask="+\\1 (111) 111-1111" placeholder="Phone number" type="tel" />
 ```
 
-You can also get a raw user input text if you want. Then, instead of using v-model you might need second argument of the input event:
+You can also get a raw user input text if you want. Instead of using v-model you might need second argument of the input event:
 ```vue
-<masked-input mask="+\1 (111) 1111-11" placeholder="Phone" @input="rawVal = arguments[1]" />
+<masked-input mask="+\\1 (111) 1111-11" placeholder="Phone" @input="rawVal = arguments[1]" />
 ```
 
 ## Known issues/TODO
 * Cut in mobile Chrome
 * Cyrillic chars are not supported in mobile Chrome
 
-Found more? Open for feedback and pull requests
+Found more? It's open for feedback and pull requests

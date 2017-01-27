@@ -51,7 +51,10 @@ export default {
   watch: {
     mask: function(newMask) {
       this.initMask()
-    }
+    },
+    value: function(newValue) {
+      if (this.mask_core) this.mask_core.setValue(newValue) //For multiple inputs support
+    },
   },
 
   mounted() {
