@@ -253,7 +253,10 @@ export default {
 
     paste(e) {
       e.preventDefault()
-      this.mask_core.paste(e.clipboardData.getData('text'))
+      let text = e.clipboardData.getData('text')
+      for (let i = 0; i < text.length; ++i) {
+        this.mask_core.input(text[i])
+      }
       this.updateToCoreState()
     },
 
