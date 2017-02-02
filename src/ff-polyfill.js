@@ -1,5 +1,5 @@
 //https://gist.github.com/nuxodin/9250e56a3ce6c0446efa
-export default function () {
+export default () => {
   var w = window,
     d = w.document;
 

@@ -40,11 +40,13 @@ export default {
     },
     mask: {
       type: String,
-      required: true
+      required: true,
+      validator:  value => !! (value && value.length >= 1)
     },
     placeholderChar: {
       type: String,
-      default: '_'
+      default: '_',
+      validator:  value => !! (value && value.length === 1)
     },
   },
 
@@ -95,8 +97,9 @@ export default {
         this.$emit('input', this.default, this.default)
       }
       catch (e) {
+        console.error(e.message);
         this.mask_core = null
-        this.$refs.input.value = '0 editable chars in mask'
+        this.$refs.input.value = 'Error, see console'
         this.$emit('input', this.$refs.input.value, '')
       }
     },

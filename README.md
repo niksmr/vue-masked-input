@@ -32,6 +32,11 @@ You can also get a raw user input text if you want. Instead of using v-model you
 <masked-input mask="+\\1 (111) 1111-11" placeholder="Phone" @input="rawVal = arguments[1]" />
 ```
 
+Placeholder character is customizable (`_` by default):
+```vue
+<masked-input v-model="phone" mask="+\\1 (111) 111-1111" placeholderChar="-" placeholder="Phone number" type="tel" />
+```
+
 ## Known issues/TODO
 * Cut in mobile Chrome
 * Cyrillic chars are not supported in mobile Chrome

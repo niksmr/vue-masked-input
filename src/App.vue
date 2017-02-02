@@ -15,7 +15,7 @@
     <li># – alphanumeric, forced to upper case when entered</li>
   </ul>
   <h4>Date: </h4>
-  <masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date"/><span v-if="">{{ date }}</span>
+  <masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date"/><span>{{ date }}</span>
   <p class="code">
     &lt;masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date" /&gt;
   </p>
