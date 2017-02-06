@@ -16,7 +16,7 @@
     <li>+ – any character</li>
   </ul>
 
-
+  <temp v-model="date" mask="11 / 11 / 1111" placeholder="Date" name="date"/>
   <h4>Date: </h4>
   <masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date"/><span>{{ date }}</span>
   <p class="code">
@@ -60,9 +60,7 @@
 
 <script>
 import MaskedInput from './MaskedInput.vue'
-import VeeValidate from 'vee-validate'
 import Vue from 'vue'
-Vue.use(VeeValidate)
 
 export default {
   name: 'app',
