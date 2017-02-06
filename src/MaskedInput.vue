@@ -11,7 +11,7 @@
     @cut="cut(arguments[0])"
     @copy="copy(arguments[0])"
     @paste="paste(arguments[0])"
-    :disabled="mask_core===null"
+    :disabled="mask_core===null || disabled"
   />
 </template>
 
@@ -34,10 +34,6 @@ export default {
     value: {
       type: String
     },
-    default: {
-      type: String,
-      default: ''
-    },
     mask: {
       type: String,
       required: true,
@@ -48,6 +44,10 @@ export default {
       default: '_',
       validator:  value => !! (value && value.length === 1)
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
 
   watch: {
@@ -69,7 +69,7 @@ export default {
       try {
         this.mask_core = new InputMask({
           pattern: this.mask,
-          value: this.default,
+          value: '',
           placeholderChar: this.placeholderChar,
           formatCharacters: {
             'a': {
@@ -86,15 +86,26 @@ export default {
               validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
               transform: char => char.toUpperCase()
             },
+            '+': {
+              validate: char => true,
+            },
           }
         })
-        this.$refs.input.value = this.default
-        this.mask_core.setValue(this.default)
+        for (let i = 0; i < this.$refs.input.value.length; ++i) {
+          this.mask_core.input(this.$refs.input.value[i])
+        }
         this.mask_core.setSelection({
           start: 0,
           end: 0
         })
-        this.$emit('input', this.default, this.default)
+        if (this.$refs.input.value === '') {
+          this.$emit('input', '', '')
+        }
+        else {
+          this.updateToCoreState()
+        }
+
+
       }
       catch (e) {
         console.error(e.message);
@@ -256,7 +267,10 @@ export default {
 
     paste(e) {
       e.preventDefault()
-      this.mask_core.paste(e.clipboardData.getData('text'))
+      let text = e.clipboardData.getData('text')
+      for (let i = 0; i < text.length; ++i) {
+        this.mask_core.input(text[i])
+      }
       this.updateToCoreState()
     },
 
@@ -282,12 +296,12 @@ export default {
 
     focusout(e) {
       if (this.isEmpty()) {
-        this.$refs.input.value = this.default
+        this.$refs.input.value = ''
         this.mask_core.setSelection({
           start: 0,
           end: 0
         })
-        this.$emit('input', this.default, this.default)
+        this.$emit('input', '', '')
       }
     },
 

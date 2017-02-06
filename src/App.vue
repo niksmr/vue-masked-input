@@ -13,44 +13,56 @@
     <li>A – letter, forced to upper case when entered</li>
     <li>* – alphanumeric</li>
     <li># – alphanumeric, forced to upper case when entered</li>
+    <li>+ – any character</li>
   </ul>
+
+
   <h4>Date: </h4>
   <masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date"/><span>{{ date }}</span>
   <p class="code">
     &lt;masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date" /&gt;
   </p>
+
   <h4>Phone: </h4>
-  <masked-input v-model="phone" mask="+\1 (111) 1111-11" placeholder="Phone" /><span>{{ phone }}</span>
+  <masked-input v-model="phone" mask="\+\1 (111) 1111-11" placeholder="Phone" /><span>{{ phone }}</span>
   <p class="code">
-    &lt;masked-input v-model="phone" mask="+\1 (111) 1111-11" placeholder="Phone" /&gt;
+    &lt;masked-input v-model="phone" mask="\+\1 (111) 1111-11" placeholder="Phone" /&gt;
   </p>
+
   <h4>Get a raw value: </h4>
-  <masked-input mask="+\1 (111) 1111-11" placeholder="Phone" @input="rawVal = arguments[1]" /><span>{{ rawVal }}</span>
+  <masked-input mask="\+\1 (111) 1111-11" placeholder="Phone" @input="rawVal = arguments[1]" /><span>{{ rawVal }}</span>
   <p class="code">
-    &lt;masked-input mask=&quot;+\1 (111) 1111-11&quot; placeholder=&quot;Phone&quot; <br />&nbsp;&nbsp;@input=&quot;rawVal = arguments[1]&quot; /&gt;
+    &lt;masked-input mask=&quot;\+\1 (111) 1111-11&quot; placeholder=&quot;Phone&quot; <br />&nbsp;&nbsp;@input=&quot;rawVal = arguments[1]&quot; /&gt;
   </p>
+
   <h4>Your own mask (hot re-mask available): </h4>
   <input v-model="userMask" placeholder="Mask" />
   <masked-input v-model="userField" :mask="userMask" placeholder="Text" /><span>{{ userField }}</span>
   <br />
   <br />
+
   <h4>Install </h4>
   <p class="code">
     npm install vue-masked-input --save
   </p>
+
   <h4>Use</h4>
   <p class="code">
     import MaskedInput from 'vue-masked-input'
     <br /> ... <br />components: { <br />&nbsp;&nbsp;MaskedInput <br />}
   </p>
   <br />
+
   <h4>Check <a href="https://github.com/niksmr/vue-masked-input">GitHub</a> for more</h4>
   <br />
 </div>
 </template>
 
 <script>
-import MaskedInput from './MaskedInput.vue';
+import MaskedInput from './MaskedInput.vue'
+import VeeValidate from 'vee-validate'
+import Vue from 'vue'
+Vue.use(VeeValidate)
 
 export default {
   name: 'app',

@@ -21,20 +21,21 @@ The following format characters define editable parts of the mask (see [inputmas
 * `A` - letter, forced to upper case when entered
 * `*` - alphanumeric
 * `#` - alphanumeric, forced to upper case when entered
+* `+` - any character
 
 If you need to include one of these characters as a static part of the mask, you can escape them with a preceding backslash:
 ```vue
-<masked-input v-model="phone" mask="+\\1 (111) 111-1111" placeholder="Phone number" type="tel" />
+<masked-input v-model="phone" mask="\+\1 (111) 111-1111" placeholder="Phone number" type="tel" />
 ```
 
 You can also get a raw user input text if you want. Instead of using v-model you might need second argument of the input event:
 ```vue
-<masked-input mask="+\\1 (111) 1111-11" placeholder="Phone" @input="rawVal = arguments[1]" />
+<masked-input mask="\+\1 (111) 1111-11" placeholder="Phone" @input="rawVal = arguments[1]" />
 ```
 
-Placeholder character is customizable (`_` by default):
+Placeholder character is customizable by `placeholder-char` attribute:
 ```vue
-<masked-input v-model="phone" mask="+\\1 (111) 111-1111" placeholderChar="-" placeholder="Phone number" type="tel" />
+<masked-input v-model="phone" mask="\+\1 (111) 111-1111" placeholder-char="-" placeholder="Phone number" type="tel" />
 ```
 
 ## Known issues/TODO
