@@ -91,8 +91,8 @@ export default {
             },
           }
         })
-        for (let i = 0; i < this.$refs.input.value.length; ++i) {
-          this.mask_core.input(this.$refs.input.value[i])
+        for (const char of this.$refs.input.value) {
+          this.mask_core.input(char)
         }
         this.mask_core.setSelection({
           start: 0,
@@ -222,8 +222,8 @@ export default {
       /*
        IE & FF are not trigger textInput event, so we have to force it
       */
-      let isIE = /*@cc_on!@*/false || !!document.documentMode; //by http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-      let isFirefox = typeof InstallTrigger !== 'undefined';
+      const isIE = /*@cc_on!@*/false || !!document.documentMode; //by http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+      const isFirefox = typeof InstallTrigger !== 'undefined';
 
 
       if (isIE || isFirefox) {
@@ -267,9 +267,9 @@ export default {
 
     paste(e) {
       e.preventDefault()
-      let text = e.clipboardData.getData('text')
-      for (let i = 0; i < text.length; ++i) {
-        this.mask_core.input(text[i])
+      const pasteText = e.clipboardData.getData('text')
+      for (const char of pasteText) {
+        this.mask_core.input(char)
       }
       this.updateToCoreState()
     },
