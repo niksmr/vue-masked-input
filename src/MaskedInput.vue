@@ -94,8 +94,7 @@ export default {
         })
 
         for (const char of this.$refs.input.value) {
-          console.log('');
-          //this.mask_core.input(char)
+          this.mask_core.input(char)
         }
         this.mask_core.setSelection({
           start: 0,
