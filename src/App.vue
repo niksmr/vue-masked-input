@@ -60,6 +60,7 @@
 <script>
 import MaskedInput from './MaskedInput.vue'
 import Vue from 'vue'
+import 'babel-polyfill'
 
 export default {
   name: 'app',
@@ -97,14 +98,14 @@ input {
   font-size: inherit;
   padding: 8px 16px;
   border: none;
-  border-bottom: 1px solid #4fc08d;
+  border-bottom: 2px solid #4fc08d;
   outline: none;
   margin-right: 24px;
 }
 
 hr {
   border: none;
-  border-bottom: 1px solid #DDD;
+  border-bottom: 2px solid #DDD;
 }
 
 h1 {

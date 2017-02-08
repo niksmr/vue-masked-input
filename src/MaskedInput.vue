@@ -67,6 +67,7 @@ export default {
 
     initMask() {
       try {
+
         this.mask_core = new InputMask({
           pattern: this.mask,
           value: '',
@@ -91,8 +92,10 @@ export default {
             },
           }
         })
+
         for (const char of this.$refs.input.value) {
-          this.mask_core.input(char)
+          console.log('');
+          //this.mask_core.input(char)
         }
         this.mask_core.setSelection({
           start: 0,
@@ -108,7 +111,7 @@ export default {
 
       }
       catch (e) {
-        console.error(e.message);
+        console.error(e);
         this.mask_core = null
         this.$refs.input.value = 'Error, see console'
         this.$emit('input', this.$refs.input.value, '')
