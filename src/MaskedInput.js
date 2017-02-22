@@ -1,26 +1,25 @@
-<template>
-  <input ref="input"
-    :value="value"
-    @keydown="keyDown(arguments[0])"
-    @keypress="keyPress(arguments[0])"
-    @keyup="keyUp(arguments[0])"
-    @textInput="textInput(arguments[0])"
-    @mouseup="mouseUp(arguments[0])"
-    @focus.prevent="focusin(arguments[0])"
-    @focusout="focusout(arguments[0])"
-    @cut="cut(arguments[0])"
-    @copy="copy(arguments[0])"
-    @paste="paste(arguments[0])"
-    :disabled="mask_core===null || disabled"
-  />
-</template>
-
-<script>
 import InputMask from 'inputmask-core'
 import ffpoly from './ff-polyfill.js' //Firefox Polyfill for focus events
 ffpoly()
 
 export default {
+
+  template: `
+    <input ref="input"
+      :value="value"
+      @keydown="keyDown(arguments[0])"
+      @keypress="keyPress(arguments[0])"
+      @keyup="keyUp(arguments[0])"
+      @textInput="textInput(arguments[0])"
+      @mouseup="mouseUp(arguments[0])"
+      @focus.prevent="focusin(arguments[0])"
+      @focusout="focusout(arguments[0])"
+      @cut="cut(arguments[0])"
+      @copy="copy(arguments[0])"
+      @paste="paste(arguments[0])"
+      :disabled="mask_core===null || disabled"
+    />
+  `,
 
   name: 'MaskedInput',
 
@@ -67,7 +66,6 @@ export default {
 
     initMask() {
       try {
-
         this.mask_core = new InputMask({
           pattern: this.mask,
           value: '',
@@ -92,9 +90,8 @@ export default {
             },
           }
         })
-
-        for (const char of this.$refs.input.value) {
-          this.mask_core.input(char)
+        for (let i = 0; i < this.$refs.input.value.length; ++i) {
+          this.mask_core.input(this.$refs.input.value[i])
         }
         this.mask_core.setSelection({
           start: 0,
@@ -110,7 +107,7 @@ export default {
 
       }
       catch (e) {
-        console.error(e);
+        console.error(e.message);
         this.mask_core = null
         this.$refs.input.value = 'Error, see console'
         this.$emit('input', this.$refs.input.value, '')
@@ -224,8 +221,8 @@ export default {
       /*
        IE & FF are not trigger textInput event, so we have to force it
       */
-      const isIE = /*@cc_on!@*/false || !!document.documentMode; //by http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-      const isFirefox = typeof InstallTrigger !== 'undefined';
+      let isIE = /*@cc_on!@*/false || !!document.documentMode; //by http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+      let isFirefox = typeof InstallTrigger !== 'undefined';
 
 
       if (isIE || isFirefox) {
@@ -269,9 +266,9 @@ export default {
 
     paste(e) {
       e.preventDefault()
-      const pasteText = e.clipboardData.getData('text')
-      for (const char of pasteText) {
-        this.mask_core.input(char)
+      let text = e.clipboardData.getData('text')
+      for (let i = 0; i < text.length; ++i) {
+        this.mask_core.input(text[i])
       }
       this.updateToCoreState()
     },
@@ -333,4 +330,3 @@ export default {
   }
 
 }
-</script>

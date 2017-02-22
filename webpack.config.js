@@ -4,7 +4,7 @@ var webpack = require('webpack')
 module.exports = {
   entry: {
     demo: './src/main.js',
-    component: './src/MaskedInput.vue'
+    component: './src/MaskedInput.js'
   },
   output: {
     path: path.resolve(__dirname, './dist'),
