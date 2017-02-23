@@ -1,11 +1,11 @@
 {
   "name": "vue-masked-input",
   "description": "Masked input component for Vue.js 2.X",
-  "version": "0.3.5",
+  "version": "0.4.1",
   "author": "niksmr",
   "license": "MIT",
   "homepage": "https://github.com/niksmr/vue-masked-input",
-  "main": "src/MaskedInput.vue",
+  "main": "src/MaskedInput.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
