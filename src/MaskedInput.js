@@ -17,6 +17,7 @@ export default {
       @cut="cut(arguments[0])"
       @copy="copy(arguments[0])"
       @paste="paste(arguments[0])"
+      @blur="$emit('blur')"
       :disabled="mask_core===null || disabled"
     />
   `,
