@@ -35,9 +35,8 @@ export default {
       type: String
     },
     mask: {
-      type: String,
       required: true,
-      validator:  value => !! (value && value.length >= 1)
+      validator:  value => !! ((value && value.length >= 1) || value instanceof Object)
     },
     placeholderChar: {
       type: String,
@@ -67,30 +66,34 @@ export default {
 
     initMask() {
       try {
-        this.mask_core = new InputMask({
-          pattern: this.mask,
-          value: '',
-          placeholderChar: this.placeholderChar,
-          formatCharacters: {
-            'a': {
-              validate: char => /^[A-Za-zА-Яа-я]$/.test(char),
-            },
-            'A': {
-              validate: char => /^[A-Za-zА-Яа-я]$/.test(char) ,
-              transform: char => char.toUpperCase()
-            },
-            '*': {
-              validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
-            },
-            '#': {
-              validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
-              transform: char => char.toUpperCase()
-            },
-            '+': {
-              validate: char => true,
-            },
-          }
-        })
+        if (this.mask instanceof Object) {
+          this.mask_core = new InputMask(this.mask)
+        } else {
+          this.mask_core = new InputMask({
+              pattern: this.mask,
+              value: '',
+              placeholderChar: this.placeholderChar,
+              formatCharacters: {
+                  'a': {
+                      validate: char => /^[A-Za-zА-Яа-я]$/.test(char),
+                  },
+                  'A': {
+                      validate: char => /^[A-Za-zА-Яа-я]$/.test(char),
+                      transform: char => char.toUpperCase()
+                  },
+                  '*': {
+                      validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
+                  },
+                  '#': {
+                      validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
+                      transform: char => char.toUpperCase()
+                  },
+                  '+': {
+                      validate: char => true,
+                  },
+              }
+          })
+        }
         for (let i = 0; i < this.$refs.input.value.length; ++i) {
           this.mask_core.input(this.$refs.input.value[i])
         }
