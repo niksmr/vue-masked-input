@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import MaskedInput from '../dist/maskedInput.js'
+import MaskedInput from './MaskedInput.js'
 import Vue from 'vue'
 import 'babel-polyfill'
 

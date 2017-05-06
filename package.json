@@ -11,7 +11,7 @@
     "babel": "npm run babel-component & npm run babel-poly",
     "babel-component": "babel src/ff-polyfill.js --out-file dist/ff-polyfill.js",
     "babel-poly": "babel src/MaskedInput.js --out-file dist/maskedInput.js",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules& npm run babel"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules & npm run babel"
   },
   "repository": {
     "type": "git",

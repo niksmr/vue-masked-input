@@ -86,6 +86,7 @@ export default {
           pattern: this.mask,
           value: '',
           placeholderChar: this.placeholderChar,
+          /* eslint-disable quote-props */
           formatCharacters: {
             'a': {
               validate: function validate(char) {
@@ -166,7 +167,8 @@ export default {
         case 37:
           e.preventDefault();
           if (this.$refs.input.selectionStart === this.$refs.input.selectionEnd) {
-            this.$refs.input.selectionEnd = this.$refs.input.selectionStart--;
+            // this.$refs.input.selectionEnd = this.$refs.input.selectionStart - 1; @TODO
+            this.$refs.input.selectionStart -= 1;
           }
           this.maskCore.selection = {
             start: this.$refs.input.selectionStart,
@@ -237,7 +239,9 @@ export default {
       // works only on Desktop
       if (e.ctrlKey) return; // Fix FF copy/paste issue
       // IE & FF are not trigger textInput event, so we have to force it
+      /* eslint-disable */
       var isIE = /*@cc_on!@*/false || !!document.documentMode; //by http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+      /* eslint-enable */
       var isFirefox = typeof InstallTrigger !== 'undefined';
       if (isIE || isFirefox) {
         e.preventDefault();
@@ -261,7 +265,7 @@ export default {
       if (this.$refs.input.selectionStart !== this.$refs.input.selectionEnd) {
         try {
           document.execCommand('copy');
-        } catch (err) {}
+        } catch (err) {} // eslint-disable-line no-empty
         this.maskCore.backspace();
         this.updateToCoreState();
       }
