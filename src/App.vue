@@ -65,7 +65,7 @@ import 'babel-polyfill'
 export default {
   name: 'app',
   data: () => ({
-    date: '12/11',
+    date: '',
     phone: '',
     userMask: 'aa-aa-AAAA',
     userField: '',
