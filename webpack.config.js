@@ -3,8 +3,7 @@ var webpack = require('webpack')
 
 module.exports = {
   entry: {
-    demo: './src/main.js',
-    component: './src/MaskedInput.js'
+    demo: './src/main.js'
   },
   output: {
     path: path.resolve(__dirname, './dist'),

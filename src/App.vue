@@ -58,14 +58,14 @@
 </template>
 
 <script>
-import MaskedInput from './MaskedInput.js'
+import MaskedInput from '../dist/maskedInput.js'
 import Vue from 'vue'
 import 'babel-polyfill'
 
 export default {
   name: 'app',
   data: () => ({
-    date: '',
+    date: '12/11',
     phone: '',
     userMask: 'aa-aa-AAAA',
     userField: '',
