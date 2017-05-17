@@ -230,7 +230,10 @@ export default {
       this.updateToCoreState();
     },
 
-    keyUp() {
+    keyUp(e) {
+      if (e.keyCode === 9) { // Preven change selection for Tab in
+        return;
+      }
       this.updateToCoreState();
       this.updateAfterAll = false;
     },
