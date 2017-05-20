@@ -1,7 +1,7 @@
 // Copy paste from https://gist.github.com/nuxodin/9250e56a3ce6c0446efa
-export default function() {
-var w = window,
-    d = w.document;
+export default function () {
+  var w = window,
+      d = w.document;
 
   if (w.onfocusin === undefined) {
     d.addEventListener('focus', addPolyfill, true);
@@ -21,7 +21,8 @@ var w = window,
   }
 
   function removePolyfill(e) {
-    if (!e.c1Generated) { // focus after focusin, so chrome will the first time trigger tow times focusin
+    if (!e.c1Generated) {
+      // focus after focusin, so chrome will the first time trigger tow times focusin
       d.removeEventListener('focus', addPolyfill, true);
       d.removeEventListener('blur', addPolyfill, true);
       d.removeEventListener('focusin', removePolyfill, true);
