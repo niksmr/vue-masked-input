@@ -39,9 +39,8 @@ export default {
       type: String,
     },
     mask: {
-      type: String,
       required: true,
-      validator: value => !!(value && value.length >= 1),
+      validator:  value => !! ((value && value.length >= 1) || value instanceof Object)
     },
     placeholderChar: {
       type: String,
@@ -70,32 +69,36 @@ export default {
   methods: {
     initMask() {
       try {
-        this.maskCore = new InputMask({
-          pattern: this.mask,
-          value: '',
-          placeholderChar: this.placeholderChar,
-          /* eslint-disable quote-props */
-          formatCharacters: {
-            'a': {
-              validate: char => /^[A-Za-zА-Яа-я]$/.test(char),
+        if (this.mask instanceof Object) {
+          this.maskСore = new InputMask(this.mask)
+        } else {
+          this.maskCore = new InputMask({
+            pattern: this.mask,
+            value: '',
+            placeholderChar: this.placeholderChar,
+            /* eslint-disable quote-props */
+            formatCharacters: {
+              'a': {
+                validate: char => /^[A-Za-zА-Яа-я]$/.test(char),
+              },
+              'A': {
+                validate: char => /^[A-Za-zА-Яа-я]$/.test(char),
+                transform: char => char.toUpperCase(),
+              },
+              '*': {
+                validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
+              },
+              '#': {
+                validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
+                transform: char => char.toUpperCase(),
+              },
+              '+': {
+                validate: () => true,
+              },
             },
-            'A': {
-              validate: char => /^[A-Za-zА-Яа-я]$/.test(char),
-              transform: char => char.toUpperCase(),
-            },
-            '*': {
-              validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
-            },
-            '#': {
-              validate: char => /^[\dA-Za-zА-Яа-я]$/.test(char),
-              transform: char => char.toUpperCase(),
-            },
-            '+': {
-              validate: () => true,
-            },
-          },
-          /* eslint-enable */
-        });
+            /* eslint-enable */
+          });
+        }
         [...this.$refs.input.value].reduce((memo, item) => this.maskCore.input(item), null);
         this.maskCore.setSelection({
           start: 0,
