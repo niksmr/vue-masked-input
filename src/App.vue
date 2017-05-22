@@ -17,7 +17,7 @@
   </ul>
 
   <h4>Date: </h4>
-  <masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date"/><span>{{ date }}</span>
+  <masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date" /><span>{{ date }}</span>
   <p class="code">
     &lt;masked-input v-model="date" mask="11 / 11 / 1111" placeholder="Date" /&gt;
   </p>

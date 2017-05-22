@@ -44,10 +44,9 @@ export default {
       type: String
     },
     mask: {
-      type: String,
       required: true,
       validator: function validator(value) {
-        return !!(value && value.length >= 1);
+        return !!(value && value.length >= 1 || value instanceof Object);
       }
     },
     placeholderChar: {
@@ -64,8 +63,10 @@ export default {
   },
 
   watch: {
-    mask: function mask() {
-      this.initMask();
+    mask: function mask(newValue, oldValue) {
+      if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+        this.initMask();
+      }
     },
     value: function value(newValue) {
       if (this.maskCore) this.maskCore.setValue(newValue); // For multiple inputs support
@@ -82,49 +83,53 @@ export default {
       var _this = this;
 
       try {
-        this.maskCore = new InputMask({
-          pattern: this.mask,
-          value: '',
-          placeholderChar: this.placeholderChar,
-          /* eslint-disable quote-props */
-          formatCharacters: {
-            'a': {
-              validate: function validate(char) {
-                return (/^[A-Za-zА-Яа-я]$/.test(char)
-                );
-              }
-            },
-            'A': {
-              validate: function validate(char) {
-                return (/^[A-Za-zА-Яа-я]$/.test(char)
-                );
+        if (this.mask instanceof Object) {
+          this.maskCore = new InputMask(this.mask);
+        } else {
+          this.maskCore = new InputMask({
+            pattern: this.mask,
+            value: '',
+            placeholderChar: this.placeholderChar,
+            /* eslint-disable quote-props */
+            formatCharacters: {
+              'a': {
+                validate: function validate(char) {
+                  return (/^[A-Za-zА-Яа-я]$/.test(char)
+                  );
+                }
               },
-              transform: function transform(char) {
-                return char.toUpperCase();
-              }
-            },
-            '*': {
-              validate: function validate(char) {
-                return (/^[\dA-Za-zА-Яа-я]$/.test(char)
-                );
-              }
-            },
-            '#': {
-              validate: function validate(char) {
-                return (/^[\dA-Za-zА-Яа-я]$/.test(char)
-                );
+              'A': {
+                validate: function validate(char) {
+                  return (/^[A-Za-zА-Яа-я]$/.test(char)
+                  );
+                },
+                transform: function transform(char) {
+                  return char.toUpperCase();
+                }
               },
-              transform: function transform(char) {
-                return char.toUpperCase();
-              }
-            },
-            '+': {
-              validate: function validate() {
-                return true;
+              '*': {
+                validate: function validate(char) {
+                  return (/^[\dA-Za-zА-Яа-я]$/.test(char)
+                  );
+                }
+              },
+              '#': {
+                validate: function validate(char) {
+                  return (/^[\dA-Za-zА-Яа-я]$/.test(char)
+                  );
+                },
+                transform: function transform(char) {
+                  return char.toUpperCase();
+                }
+              },
+              '+': {
+                validate: function validate() {
+                  return true;
+                }
               }
             }
-          }
-        });
+          });
+        }
         [].concat(_toConsumableArray(this.$refs.input.value)).reduce(function (memo, item) {
           return _this.maskCore.input(item);
         }, null);

@@ -40,7 +40,7 @@ export default {
     },
     mask: {
       required: true,
-      validator:  value => !! ((value && value.length >= 1) || value instanceof Object)
+      validator: value => !!((value && value.length >= 1) || value instanceof Object),
     },
     placeholderChar: {
       type: String,
@@ -54,8 +54,10 @@ export default {
   },
 
   watch: {
-    mask() {
-      this.initMask();
+    mask(newValue, oldValue) {
+      if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+        this.initMask();
+      }
     },
     value(newValue) {
       if (this.maskCore) this.maskCore.setValue(newValue); // For multiple inputs support
@@ -70,7 +72,7 @@ export default {
     initMask() {
       try {
         if (this.mask instanceof Object) {
-          this.maskСore = new InputMask(this.mask)
+          this.maskCore = new InputMask(this.mask);
         } else {
           this.maskCore = new InputMask({
             pattern: this.mask,
