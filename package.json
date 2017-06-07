@@ -8,6 +8,7 @@
   "main": "dist/maskedInput.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
+    "lint": "./node_modules/.bin/eslint src/MaskedInput.js",
     "babel": "npm run babel-component & npm run babel-poly",
     "babel-component": "babel src/ff-polyfill.js --out-file dist/ff-polyfill.js",
     "babel-poly": "babel src/MaskedInput.js --out-file dist/maskedInput.js",
