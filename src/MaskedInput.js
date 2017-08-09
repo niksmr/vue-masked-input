@@ -1,4 +1,4 @@
-import InputMask from 'inputmask-core';
+var InputMask = require('inputmask-core');
 import ffpoly from './ff-polyfill'; // Firefox Polyfill for focus events
 
 ffpoly();
