@@ -167,6 +167,15 @@ export default {
             this.updateToCoreState();
           }
           break;
+          
+        // backspace Android
+        case 229:
+          e.preventDefault();
+          if (this.maskCore.selection.start > this.marginLeft || this.maskCore.selection.start !== this.maskCore.selection.end) {
+            this.maskCore.backspace();
+            this.updateToCoreState();
+          }
+          break;
 
         // left arrow
         case 37:
