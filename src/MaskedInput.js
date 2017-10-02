@@ -259,8 +259,11 @@ export default {
 
     paste(e) {
       e.preventDefault();
-      const text = e.clipboardData.getData('text');
-      [...text].reduce((memo, item) => this.maskCore.input(item), null);
+      const cpData = e.clipboardData || window.clipboardData || e.originalEvent.clipboardData;
+      if (cpData) {
+        const text = cpData.getData('text');
+        [...text].reduce((memo, item) => this.maskCore.input(item), null);
+      }
       this.updateToCoreState();
     },
 
