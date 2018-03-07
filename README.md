@@ -10,6 +10,15 @@ npm install vue-masked-input --save
 ```
 
 ## Usage
+Include plugin in your `main.js` file.
+
+```js
+import Vue from 'vue'
+import MaskedInput from 'vue-masked-input'
+
+Vue.use(MaskedInput)
+```
+
 Use it with `v-model` just like a native html input with the `mask` attribute:
 ```vue
 <masked-input v-model="date" mask="11/11/1111" placeholder="dd/mm/yyyy" />
