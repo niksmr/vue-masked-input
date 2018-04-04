@@ -128,6 +128,7 @@ export default {
                 }
               }
             }
+            /* eslint-enable */
           });
         }
         [].concat(_toConsumableArray(this.$refs.input.value)).reduce(function (memo, item) {
@@ -284,7 +285,7 @@ export default {
       var _this2 = this;
 
       e.preventDefault();
-      var text = e.clipboardData.getData('text');
+      var text = (e.clipboardData || window.clipboardData).getData('text');
       [].concat(_toConsumableArray(text)).reduce(function (memo, item) {
         return _this2.maskCore.input(item);
       }, null);
