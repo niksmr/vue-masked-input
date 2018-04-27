@@ -220,7 +220,8 @@ export default {
       const isIE = /*@cc_on!@*/false || !!document.documentMode; //by http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
       /* eslint-enable */
       const isFirefox = typeof InstallTrigger !== 'undefined';
-      if (isIE || isFirefox) {
+      // TODO: Check against a list of modifier keys instead of only the tab key with [].includes()
+      if ((isIE || isFirefox) && e.keyCode !== 9) {
         e.preventDefault();
         e.data = e.key;
         this.textInput(e);
