@@ -1,5 +1,10 @@
-// Copy paste from https://gist.github.com/nuxodin/9250e56a3ce6c0446efa
-export default function () {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function () {
   var w = window,
       d = w.document;
 
@@ -34,3 +39,5 @@ export default function () {
     });
   }
 };
+
+; // Copy paste from https://gist.github.com/nuxodin/9250e56a3ce6c0446efa

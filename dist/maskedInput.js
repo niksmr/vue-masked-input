@@ -1,11 +1,26 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _inputmaskCore = require('inputmask-core');
+
+var _inputmaskCore2 = _interopRequireDefault(_inputmaskCore);
+
+var _ffPolyfill = require('./ff-polyfill');
+
+var _ffPolyfill2 = _interopRequireDefault(_ffPolyfill);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-import InputMask from 'inputmask-core';
-import ffpoly from './ff-polyfill'; // Firefox Polyfill for focus events
+// Firefox Polyfill for focus events
 
-ffpoly();
+(0, _ffPolyfill2.default)();
 
-export default {
+exports.default = {
   name: 'MaskedInput',
   render: function render(h) {
     return h('input', {
@@ -84,9 +99,9 @@ export default {
 
       try {
         if (this.mask instanceof Object) {
-          this.maskCore = new InputMask(this.mask);
+          this.maskCore = new _inputmaskCore2.default(this.mask);
         } else {
-          this.maskCore = new InputMask({
+          this.maskCore = new _inputmaskCore2.default({
             pattern: this.mask,
             value: '',
             placeholderChar: this.placeholderChar,
@@ -128,6 +143,7 @@ export default {
                 }
               }
             }
+            /* eslint-enable */
           });
         }
         [].concat(_toConsumableArray(this.$refs.input.value)).reduce(function (memo, item) {
