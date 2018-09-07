@@ -1,10 +1,10 @@
 {
-  "name": "vue-masked-input",
+  "name": "rinu-vue-masked-input",
   "description": "Masked input component for Vue.js 2.X",
   "version": "0.5.2",
   "author": "niksmr",
   "license": "MIT",
-  "homepage": "https://github.com/niksmr/vue-masked-input",
+  "homepage": "https://github.com/rinu/vue-masked-input",
   "main": "dist/maskedInput.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/niksmr/vue-masked-input.git"
+    "url": "git+https://github.com/rinu/vue-masked-input.git"
   },
   "keywords": [
     "vue",
