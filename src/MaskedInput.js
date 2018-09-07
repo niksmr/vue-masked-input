@@ -229,7 +229,11 @@ export default {
 
     textInput(e) {
       if (e.preventDefault) e.preventDefault();
-      if (this.maskCore.input(e.data)) {
+      if (typeof e.data === 'undefined') {
+        const text = e.target.value;
+        e.target.value = '';
+        [...text].reduce((memo, item) => this.maskCore.input(item), null);
+      } else if (this.maskCore.input(e.data)) {
         this.updateAfterAll = true;
       }
       this.updateToCoreState();

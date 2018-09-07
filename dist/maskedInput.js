@@ -128,6 +128,7 @@ export default {
                 }
               }
             }
+            /* eslint-enable */
           });
         }
         [].concat(_toConsumableArray(this.$refs.input.value)).reduce(function (memo, item) {
@@ -255,8 +256,16 @@ export default {
       }
     },
     textInput: function textInput(e) {
+      var _this2 = this;
+
       if (e.preventDefault) e.preventDefault();
-      if (this.maskCore.input(e.data)) {
+      if (typeof e.data === 'undefined') {
+        var text = e.target.value;
+        e.target.value = '';
+        [].concat(_toConsumableArray(text)).reduce(function (memo, item) {
+          return _this2.maskCore.input(item);
+        }, null);
+      } else if (this.maskCore.input(e.data)) {
         this.updateAfterAll = true;
       }
       this.updateToCoreState();
@@ -281,12 +290,12 @@ export default {
     },
     copy: function copy() {},
     paste: function paste(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       e.preventDefault();
       var text = e.clipboardData.getData('text');
       [].concat(_toConsumableArray(text)).reduce(function (memo, item) {
-        return _this2.maskCore.input(item);
+        return _this3.maskCore.input(item);
       }, null);
       this.updateToCoreState();
     },
