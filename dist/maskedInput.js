@@ -22,6 +22,7 @@ export default {
         keyup: this.keyUp,
         textInput: this.textInput,
         mouseup: this.mouseUp,
+        focusin: this.mouseUp,
         focusout: this.focusOut,
         cut: this.cut,
         copy: this.copy,
