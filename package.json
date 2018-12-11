@@ -1,7 +1,7 @@
 {
   "name": "rinu-vue-masked-input",
   "description": "Masked input component for Vue.js 2.X",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "author": "niksmr",
   "license": "MIT",
   "homepage": "https://github.com/rinu/vue-masked-input",
