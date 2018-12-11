@@ -161,6 +161,7 @@ export default {
       switch (e.keyCode) {
         // backspace
         case 8:
+        case 229:
           e.preventDefault();
           if (this.maskCore.selection.start > this.marginLeft || this.maskCore.selection.start !== this.maskCore.selection.end) {
             this.maskCore.backspace();
