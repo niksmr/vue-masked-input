@@ -22,7 +22,8 @@ export default {
         keyup: this.keyUp,
         textInput: this.textInput,
         mouseup: this.mouseUp,
-        focusout: this.focusOut,
+        focusout: () => this.focusOut,
+        focus: () => this.$emit('focus'),
         cut: this.cut,
         copy: this.copy,
         paste: this.paste
@@ -274,12 +275,12 @@ export default {
       if (this.$refs.input.selectionStart !== this.$refs.input.selectionEnd) {
         try {
           document.execCommand('copy');
-        } catch (err) {} // eslint-disable-line no-empty
+        } catch (err) { } // eslint-disable-line no-empty
         this.maskCore.backspace();
         this.updateToCoreState();
       }
     },
-    copy: function copy() {},
+    copy: function copy() { },
     paste: function paste(e) {
       var _this2 = this;
 
@@ -314,6 +315,7 @@ export default {
         });
         this.$emit('input', '', '');
       }
+      this.$emit('focusout')
     },
     setNativeSelection: function setNativeSelection() {
       this.maskCore.selection = {
