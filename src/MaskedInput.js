@@ -16,8 +16,8 @@ export default {
       },
       on: {
         keydown: this.keyDown,
+        keypress: this.keyPress,
         keyup: this.keyUp,
-        textInput: this.textInput,
         input: this.input,
         mouseup: this.mouseUp,
         focusout: this.focusOut,
@@ -213,15 +213,25 @@ export default {
       }
     },
 
-    textInput(e) {
-      if (e.preventDefault) e.preventDefault();
-      if (window.navigator.userAgent.indexOf('Edge') === -1) return;
-      this.handleInput(e);
+    isMicrosoft() {
+      return !!document.documentMode || !!window.StyleMedia;
+    },
+
+    isFirefox() {
+      return typeof InstallTrigger !== 'undefined';
+    },
+
+    keyPress: function keyPress(e) {
+      if (this.isMicrosoft() || this.isFirefox()) {
+        if (e.preventDefault) e.preventDefault();
+        e.data = e.key;
+        this.handleInput(e);
+      }
     },
 
     input(e) {
       if (e.preventDefault) e.preventDefault();
-      if (window.navigator.userAgent.indexOf('Edge') !== -1) return;
+      if (this.isMicrosoft() || this.isFirefox()) return;
       this.handleInput(e);
     },
 

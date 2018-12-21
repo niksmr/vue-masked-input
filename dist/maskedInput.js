@@ -1,4 +1,4 @@
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return arr.split(''); } }
 
 import InputMask from 'inputmask-core';
 import ffpoly from './ff-polyfill'; // Firefox Polyfill for focus events
@@ -18,8 +18,8 @@ export default {
       },
       on: {
         keydown: this.keyDown,
+        keypress: this.keyPress,
         keyup: this.keyUp,
-        textInput: this.textInput,
         input: this.input,
         mouseup: this.mouseUp,
         focusout: this.focusOut,
@@ -241,14 +241,22 @@ export default {
           break;
       }
     },
-    textInput: function textInput(e) {
-      if (e.preventDefault) e.preventDefault();
-      if (window.navigator.userAgent.indexOf('Edge') === -1) return;
-      this.handleInput(e);
+    isMicrosoft: function isMicrosoft() {
+      return !!document.documentMode || !!window.StyleMedia;
+    },
+    isFirefox: function isFirefox() {
+      return typeof InstallTrigger !== 'undefined';
+    },
+    keyPress: function keyPress(e) {
+      if (this.isMicrosoft() || this.isFirefox()) {
+        if (e.preventDefault) e.preventDefault();
+        e.data = e.key;
+        this.handleInput(e);
+      }
     },
     input: function input(e) {
       if (e.preventDefault) e.preventDefault();
-      if (window.navigator.userAgent.indexOf('Edge') !== -1) return;
+      if (this.isMicrosoft() || this.isFirefox()) return;
       this.handleInput(e);
     },
     handleInput: function handleInput(e) {
