@@ -17,6 +17,7 @@ export default {
       on: {
         keydown: this.keyDown,
         keyup: this.keyUp,
+        textInput: this.textInput,
         input: this.input,
         mouseup: this.mouseUp,
         focusout: this.focusOut,
@@ -212,8 +213,19 @@ export default {
       }
     },
 
+    textInput(e) {
+      if (e.preventDefault) e.preventDefault();
+      if (window.navigator.userAgent.indexOf('Edge') === -1) return;
+      this.handleInput(e);
+    },
+
     input(e) {
       if (e.preventDefault) e.preventDefault();
+      if (window.navigator.userAgent.indexOf('Edge') !== -1) return;
+      this.handleInput(e);
+    },
+
+    handleInput(e) {
       if (typeof e.data === 'undefined') {
         const text = e.target.value;
         e.target.value = '';

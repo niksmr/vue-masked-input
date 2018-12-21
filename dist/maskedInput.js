@@ -19,6 +19,7 @@ export default {
       on: {
         keydown: this.keyDown,
         keyup: this.keyUp,
+        textInput: this.textInput,
         input: this.input,
         mouseup: this.mouseUp,
         focusout: this.focusOut,
@@ -240,10 +241,19 @@ export default {
           break;
       }
     },
+    textInput: function textInput(e) {
+      if (e.preventDefault) e.preventDefault();
+      if (window.navigator.userAgent.indexOf('Edge') === -1) return;
+      this.handleInput(e);
+    },
     input: function input(e) {
+      if (e.preventDefault) e.preventDefault();
+      if (window.navigator.userAgent.indexOf('Edge') !== -1) return;
+      this.handleInput(e);
+    },
+    handleInput: function handleInput(e) {
       var _this2 = this;
 
-      if (e.preventDefault) e.preventDefault();
       if (typeof e.data === 'undefined') {
         var text = e.target.value;
         e.target.value = '';
