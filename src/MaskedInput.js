@@ -1,7 +1,4 @@
 import InputMask from 'inputmask-core';
-import ffpoly from './ff-polyfill'; // Firefox Polyfill for focus events
-
-ffpoly();
 
 export default {
   name: 'MaskedInput',

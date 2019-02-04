@@ -1,9 +1,6 @@
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return arr.split(''); } }
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 import InputMask from 'inputmask-core';
-import ffpoly from './ff-polyfill'; // Firefox Polyfill for focus events
-
-ffpoly();
 
 export default {
   name: 'MaskedInput',
@@ -247,6 +244,8 @@ export default {
     isFirefox: function isFirefox() {
       return typeof InstallTrigger !== 'undefined';
     },
+
+
     keyPress: function keyPress(e) {
       if (this.isMicrosoft() || this.isFirefox()) {
         if (e.preventDefault) e.preventDefault();
@@ -254,6 +253,7 @@ export default {
         this.handleInput(e);
       }
     },
+
     input: function input(e) {
       if (e.preventDefault) e.preventDefault();
       if (this.isMicrosoft() || this.isFirefox()) return;
