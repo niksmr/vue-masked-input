@@ -260,13 +260,14 @@ export default {
       this.handleInput(e);
     },
     handleInput: function handleInput(e) {
+      var _this2 = this;
+
       if (typeof e.data === 'undefined') {
         var text = e.target.value;
         if (text) {
-          var lastChar = text[this.maskCore.selection.start];
-          if (lastChar) {
-            this.maskCore.input(lastChar);
-          }
+          [].concat(_toConsumableArray(text.substr(this.maskCore.selection.start))).reduce(function (memo, item) {
+            return _this2.maskCore.input(item);
+          }, null);
         }
       } else if (this.maskCore.input(e.data)) {
         this.updateAfterAll = true;
@@ -293,12 +294,12 @@ export default {
     },
     copy: function copy() {},
     paste: function paste(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       e.preventDefault();
       var text = e.clipboardData.getData('text');
       [].concat(_toConsumableArray(text)).reduce(function (memo, item) {
-        return _this2.maskCore.input(item);
+        return _this3.maskCore.input(item);
       }, null);
       this.updateToCoreState();
     },

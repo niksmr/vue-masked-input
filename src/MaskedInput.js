@@ -236,10 +236,8 @@ export default {
       if (typeof e.data === 'undefined') {
         const text = e.target.value;
         if (text) {
-          const lastChar = text[this.maskCore.selection.start];
-          if (lastChar) {
-            this.maskCore.input(lastChar);
-          }
+          [...text.substr(this.maskCore.selection.start)]
+            .reduce((memo, item) => this.maskCore.input(item), null);
         }
       } else if (this.maskCore.input(e.data)) {
         this.updateAfterAll = true;
