@@ -99,10 +99,7 @@ export default {
           });
         }
         [...this.$refs.input.value].reduce((memo, item) => this.maskCore.input(item), null);
-        this.maskCore.setSelection({
-          start: 0,
-          end: 0,
-        });
+        this.setNativeSelection();
         if (this.$refs.input.value === '') {
           this.$emit('input', '', '');
         } else {
