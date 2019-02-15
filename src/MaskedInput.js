@@ -13,8 +13,6 @@ export default {
       },
       on: {
         keydown: this.keyDown,
-        keypress: this.keyPress,
-        keyup: this.keyUp,
         input: this.input,
         mouseup: this.mouseUp,
         focusout: this.focusOut,
@@ -207,29 +205,8 @@ export default {
       }
     },
 
-    isMicrosoft() {
-      return !!document.documentMode || !!window.StyleMedia;
-    },
-
-    isFirefox() {
-      return typeof InstallTrigger !== 'undefined';
-    },
-
-    keyPress: function keyPress(e) {
-      if (this.isMicrosoft() || this.isFirefox()) {
-        if (e.preventDefault) e.preventDefault();
-        e.data = e.key;
-        this.handleInput(e);
-      }
-    },
-
     input(e) {
       if (e.preventDefault) e.preventDefault();
-      if (this.isMicrosoft() || this.isFirefox()) return;
-      this.handleInput(e);
-    },
-
-    handleInput(e) {
       if (typeof e.data === 'undefined') {
         const text = e.target.value;
         if (text) {
@@ -241,15 +218,6 @@ export default {
       }
       this.updateToCoreState();
     },
-
-    keyUp(e) {
-      if (e.keyCode === 9) { // Preven change selection for Tab in
-        return;
-      }
-      this.updateToCoreState();
-      this.updateAfterAll = false;
-    },
-
 
     cut(e) {
       e.preventDefault();

@@ -15,8 +15,6 @@ export default {
       },
       on: {
         keydown: this.keyDown,
-        keypress: this.keyPress,
-        keyup: this.keyUp,
         input: this.input,
         mouseup: this.mouseUp,
         focusout: this.focusOut,
@@ -235,30 +233,10 @@ export default {
           break;
       }
     },
-    isMicrosoft: function isMicrosoft() {
-      return !!document.documentMode || !!window.StyleMedia;
-    },
-    isFirefox: function isFirefox() {
-      return typeof InstallTrigger !== 'undefined';
-    },
-
-
-    keyPress: function keyPress(e) {
-      if (this.isMicrosoft() || this.isFirefox()) {
-        if (e.preventDefault) e.preventDefault();
-        e.data = e.key;
-        this.handleInput(e);
-      }
-    },
-
     input: function input(e) {
-      if (e.preventDefault) e.preventDefault();
-      if (this.isMicrosoft() || this.isFirefox()) return;
-      this.handleInput(e);
-    },
-    handleInput: function handleInput(e) {
       var _this2 = this;
 
+      if (e.preventDefault) e.preventDefault();
       if (typeof e.data === 'undefined') {
         var text = e.target.value;
         if (text) {
@@ -270,14 +248,6 @@ export default {
         this.updateAfterAll = true;
       }
       this.updateToCoreState();
-    },
-    keyUp: function keyUp(e) {
-      if (e.keyCode === 9) {
-        // Preven change selection for Tab in
-        return;
-      }
-      this.updateToCoreState();
-      this.updateAfterAll = false;
     },
     cut: function cut(e) {
       e.preventDefault();
