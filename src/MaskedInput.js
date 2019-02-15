@@ -1,7 +1,4 @@
 import InputMask from 'inputmask-core';
-import ffpoly from './ff-polyfill'; // Firefox Polyfill for focus events
-
-ffpoly();
 
 export default {
   name: 'MaskedInput',
@@ -16,9 +13,7 @@ export default {
       },
       on: {
         keydown: this.keyDown,
-        keypress: this.keyPress,
-        keyup: this.keyUp,
-        textInput: this.textInput,
+        input: this.input,
         mouseup: this.mouseUp,
         focusout: this.focusOut,
         cut: this.cut,
@@ -102,10 +97,7 @@ export default {
           });
         }
         [...this.$refs.input.value].reduce((memo, item) => this.maskCore.input(item), null);
-        this.maskCore.setSelection({
-          start: 0,
-          end: 0,
-        });
+        this.setNativeSelection();
         if (this.$refs.input.value === '') {
           this.$emit('input', '', '');
         } else {
@@ -213,36 +205,19 @@ export default {
       }
     },
 
-    keyPress(e) { // works only on Desktop
-      if (e.ctrlKey) return; // Fix FF copy/paste issue
-      // IE & FF are not trigger textInput event, so we have to force it
-      /* eslint-disable */
-      const isIE = /*@cc_on!@*/false || !!document.documentMode; //by http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-      /* eslint-enable */
-      const isFirefox = typeof InstallTrigger !== 'undefined';
-      if (isIE || isFirefox) {
-        e.preventDefault();
-        e.data = e.key;
-        this.textInput(e);
-      }
-    },
-
-    textInput(e) {
+    input(e) {
       if (e.preventDefault) e.preventDefault();
-      if (this.maskCore.input(e.data)) {
+      if (typeof e.data === 'undefined') {
+        const text = e.target.value;
+        if (text) {
+          [...text.substr(this.maskCore.selection.start)]
+            .reduce((memo, item) => this.maskCore.input(item), null);
+        }
+      } else if (this.maskCore.input(e.data)) {
         this.updateAfterAll = true;
       }
       this.updateToCoreState();
     },
-
-    keyUp(e) {
-      if (e.keyCode === 9) { // Preven change selection for Tab in
-        return;
-      }
-      this.updateToCoreState();
-      this.updateAfterAll = false;
-    },
-
 
     cut(e) {
       e.preventDefault();

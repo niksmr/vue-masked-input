@@ -1,9 +1,6 @@
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return arr.split(''); } }
 
 import InputMask from 'inputmask-core';
-import ffpoly from './ff-polyfill'; // Firefox Polyfill for focus events
-
-ffpoly();
 
 export default {
   name: 'MaskedInput',
@@ -18,9 +15,7 @@ export default {
       },
       on: {
         keydown: this.keyDown,
-        keypress: this.keyPress,
-        keyup: this.keyUp,
-        textInput: this.textInput,
+        input: this.input,
         mouseup: this.mouseUp,
         focusout: this.focusOut,
         cut: this.cut,
@@ -128,15 +123,13 @@ export default {
                 }
               }
             }
+            /* eslint-enable */
           });
         }
         [].concat(_toConsumableArray(this.$refs.input.value)).reduce(function (memo, item) {
           return _this.maskCore.input(item);
         }, null);
-        this.maskCore.setSelection({
-          start: 0,
-          end: 0
-        });
+        this.setNativeSelection();
         if (this.$refs.input.value === '') {
           this.$emit('input', '', '');
         } else {
@@ -240,34 +233,21 @@ export default {
           break;
       }
     },
-    keyPress: function keyPress(e) {
-      // works only on Desktop
-      if (e.ctrlKey) return; // Fix FF copy/paste issue
-      // IE & FF are not trigger textInput event, so we have to force it
-      /* eslint-disable */
-      var isIE = /*@cc_on!@*/false || !!document.documentMode; //by http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-      /* eslint-enable */
-      var isFirefox = typeof InstallTrigger !== 'undefined';
-      if (isIE || isFirefox) {
-        e.preventDefault();
-        e.data = e.key;
-        this.textInput(e);
-      }
-    },
-    textInput: function textInput(e) {
+    input: function input(e) {
+      var _this2 = this;
+
       if (e.preventDefault) e.preventDefault();
-      if (this.maskCore.input(e.data)) {
+      if (typeof e.data === 'undefined') {
+        var text = e.target.value;
+        if (text) {
+          [].concat(_toConsumableArray(text.substr(this.maskCore.selection.start))).reduce(function (memo, item) {
+            return _this2.maskCore.input(item);
+          }, null);
+        }
+      } else if (this.maskCore.input(e.data)) {
         this.updateAfterAll = true;
       }
       this.updateToCoreState();
-    },
-    keyUp: function keyUp(e) {
-      if (e.keyCode === 9) {
-        // Preven change selection for Tab in
-        return;
-      }
-      this.updateToCoreState();
-      this.updateAfterAll = false;
     },
     cut: function cut(e) {
       e.preventDefault();
@@ -281,12 +261,12 @@ export default {
     },
     copy: function copy() {},
     paste: function paste(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       e.preventDefault();
       var text = e.clipboardData.getData('text');
       [].concat(_toConsumableArray(text)).reduce(function (memo, item) {
-        return _this2.maskCore.input(item);
+        return _this3.maskCore.input(item);
       }, null);
       this.updateToCoreState();
     },
