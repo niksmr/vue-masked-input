@@ -60,7 +60,7 @@
 <script>
 import MaskedInput from './MaskedInput.js'
 import Vue from 'vue'
-import 'babel-polyfill'
+import '@babel/polyfill'
 
 export default {
   name: 'app',
