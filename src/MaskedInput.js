@@ -61,9 +61,9 @@ export default {
     },
     value(newValue) {
       if (this.maskCore) {
-				this.maskCore.setValue(newValue); // For multiple inputs support}
-				this.updateToCoreState();
-			}
+        this.maskCore.setValue(newValue); // For multiple inputs support}
+        this.updateToCoreState();
+      }
     },
   },
 
